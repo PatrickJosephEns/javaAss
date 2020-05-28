@@ -67,10 +67,5 @@ public class Dhb {
 
 	public void setLastDay(int lastDay) {
 		this.lastDay = lastDay;
-	}
-	
-	
-	
-
-	
+	}	
 }
