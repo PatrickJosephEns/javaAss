@@ -34,7 +34,11 @@ public class Utilities {
 			}for (Dhb item: districs) {
 				System.out.println(item);
 			}					
+	    }
 	
-	}			
+	public static Dhb Search(ArrayList<Dhb> dhbs, String dhbs) {
+		
+		
+	}
 	}
 

@@ -9,6 +9,7 @@ public class CovidApp {
 	ArrayList<Dhb> dhb = new ArrayList<Dhb>();
 	Utilities.load(dhb);
 	
+	
 	ProjectFrame gui = new ProjectFrame (dhb);
 	gui.setVisible(true);
 
