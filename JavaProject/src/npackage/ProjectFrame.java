@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Locale;
 import java.util.Objects;
@@ -37,7 +38,8 @@ import java.awt.Font;
 
 
 public class ProjectFrame extends JFrame{
-
+	
+	private eSort order;
 	private JPanel contentPane;
 	private JTabbedPane tabbedPane;
 	private JPanel panel;
@@ -74,6 +76,7 @@ public class ProjectFrame extends JFrame{
 	 * Create the frame.
 	 */
 	public ProjectFrame(ArrayList<Dhb> dhbs) {
+		order = eSort.ALPHABETICAL;
 		this.dhbs = dhbs;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 613, 467);
@@ -83,7 +86,7 @@ public class ProjectFrame extends JFrame{
 		contentPane.setLayout(null);
 		
 		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane.setBounds(34, 41, 557, 380);
+		tabbedPane.setBounds(34, 41, 557, 391);
 		contentPane.add(tabbedPane);
 		
 		JPanel panel_3 = new JPanel();
@@ -91,7 +94,7 @@ public class ProjectFrame extends JFrame{
 		panel_3.setLayout(null);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 11, 532, 330);
+		scrollPane.setBounds(10, 11, 532, 186);
 		panel_3.add(scrollPane);
 				
 		panel = new JPanel();
@@ -148,10 +151,34 @@ public class ProjectFrame extends JFrame{
 		table.setModel(tm);
 		scrollPane.setViewportView(table);
 		
+		JButton btnNewButton_1 = new JButton("Sort");
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				sortData("alphabet");
+			}
+		});
+		btnNewButton_1.setBounds(24, 238, 89, 23);
+		panel_3.add(btnNewButton_1);
+		
 		drawTable();
 		makePie();
 		createLineChart();
 		createBarChart();
+	}
+	
+	public void sortData(String button) {
+		switch(button) {
+		case"alphabet":
+			if(order != eSort.ALPHABETICAL) {
+			Collections.sort(dhbs, new AlfaCompare());			
+			}
+			else {
+			Collections.reverse(dhbs);	
+			}
+			order = eSort.ALPHABETICAL;
+			break;
+		}
+		drawTable();
 	}
 	
 	public void drawTable() {

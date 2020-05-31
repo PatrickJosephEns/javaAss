@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import javax.swing.JOptionPane;
 
@@ -35,7 +36,10 @@ public class Utilities {
 				System.out.println("File missing");
 			}for (Dhb item: districs) {
 				System.out.println(item);
-			}					
+			}
+			
+			Collections.sort(districs, new AlfaCompare());	
+			//Collections.reverse(districs);
 	    }
 	
 	public static Dhb Search(ArrayList<Dhb> districs, String dhbs) {
