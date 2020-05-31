@@ -5,6 +5,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.swing.JOptionPane;
+
 public class Utilities {
 
 	public static void load(ArrayList<Dhb> districs) {
@@ -36,9 +38,22 @@ public class Utilities {
 			}					
 	    }
 	
-	public static Dhb Search(ArrayList<Dhb> dhbs, String dhbs) {
+	public static Dhb Search(ArrayList<Dhb> districs, String dhbs) {
+		Dhb match = null;
+		boolean matched = false;
+		for(int i = 0; i < 19; i++) {
+			if(districs.get(i).getDhbs().toLowerCase().equals(dhbs.toLowerCase())) {
+				
+				match = districs.get(i);
+				matched = true;
+			}
+		}
 		
-		
+		if(!matched){
+			JOptionPane.showMessageDialog(null, "No match found", "ERROR", JOptionPane.ERROR_MESSAGE);
+			return null;
+		}
+		return match;	
 	}
-	}
+}
 

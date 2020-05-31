@@ -52,6 +52,14 @@ public class ProjectFrame extends JFrame{
 			}
 		);
 	
+	private DefaultTableModel tm2 = new DefaultTableModel(
+			new Object[][] {
+			},
+			new String[] {
+				"DHBs", "Active", "Recovered", "Deaths", "Total", "Last Day"
+			}
+		);
+	
 	private DefaultTableModel pg = new DefaultTableModel(
 			new Object[][] {
 			},
@@ -95,33 +103,39 @@ public class ProjectFrame extends JFrame{
 		panel.add(textField);
 		textField.setColumns(10);
 		
+		//search
 		JButton btnNewButton = new JButton("Search");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String searchVal = textField.getText();
-				Utilities.Search(dhbs, searchVal);
+				Dhb match = Utilities.Search(dhbs, searchVal);
+				
+				if(match != null) {				
+				tm2.setRowCount(0);
+				
+				Object[] object = new Object[6];
+				object[0] = match.getDhbs();
+				object[1] = match.getActive();
+				object[2] = match.getRecovered();
+				object[3] = match.getDeceased();
+				object[4] = match.getTotal();
+				object[5] = match.getLastDay();
+				
+				tm2.addRow(object);
+				}
 			}
 		});
 		btnNewButton.setBounds(217, 61, 98, 31);
 		panel.add(btnNewButton);
 		
+		JScrollPane scrollPane_1 = new JScrollPane();
+		scrollPane_1.setBounds(36, 113, 476, 39);
+		panel.add(scrollPane_1);
+		
+		//seach table
 		table_1 = new JTable();
-		table_1.setModel(new DefaultTableModel(
-			new Object[][] {
-			},
-			new String[] {
-				"DHB", "Active", "Recovered", "Deaths", "Total", "Last Day"
-			}
-		) {
-			boolean[] columnEditables = new boolean[] {
-				true, false, true, true, true, true
-			};
-			public boolean isCellEditable(int row, int column) {
-				return columnEditables[column];
-			}
-		});
-		table_1.setBounds(36, 113, 476, 37);
-		panel.add(table_1);
+		scrollPane_1.setViewportView(table_1);
+		table_1.setModel(tm2);
 		
 		JLabel lblNewLabel = new JLabel("Search Function");
 		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 29));
@@ -129,7 +143,7 @@ public class ProjectFrame extends JFrame{
 		lblNewLabel.setBounds(36, 11, 241, 39);
 		panel.add(lblNewLabel);
 		
-		
+		//Home tabel
 		table = new JTable();
 		table.setModel(tm);
 		scrollPane.setViewportView(table);
@@ -154,6 +168,7 @@ public class ProjectFrame extends JFrame{
 			tm.addRow(object);
 		}
 	}
+
 	
 	private void makePie() {
 
