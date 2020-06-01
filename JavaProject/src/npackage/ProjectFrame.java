@@ -1,21 +1,16 @@
 package npackage;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Locale;
-import java.util.Objects;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JTabbedPane;
 import javax.swing.JLabel;
-import javax.swing.ImageIcon;
 import javax.swing.JTextField;
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
@@ -24,14 +19,7 @@ import javax.swing.table.DefaultTableModel;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.axis.NumberAxis;
-import org.jfree.chart.axis.NumberTickUnit;
-import org.jfree.chart.plot.PlotOrientation;
-import org.jfree.chart.plot.XYPlot;
-import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
-import org.jfree.data.xy.XYSeries;
-import org.jfree.data.xy.XYSeriesCollection;
 import javax.swing.JButton;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
@@ -70,13 +58,14 @@ public class ProjectFrame extends JFrame{
 							"Total"
 					});
 	private JTable table_1;
+	private JTextField textField_1;
 			
 
 	/**
 	 * Create the frame.
 	 */
 	public ProjectFrame(ArrayList<Dhb> dhbs) {
-		order = eSort.ALPHABETICAL;
+		order = eSort.CASES;
 		this.dhbs = dhbs;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 613, 467);
@@ -151,19 +140,73 @@ public class ProjectFrame extends JFrame{
 		table.setModel(tm);
 		scrollPane.setViewportView(table);
 		
-		JButton btnNewButton_1 = new JButton("Sort");
+		//sort alphabetically button
+		JButton btnNewButton_1 = new JButton("Sort by alphabet");
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				sortData("alphabet");
 			}
 		});
-		btnNewButton_1.setBounds(24, 238, 89, 23);
+		btnNewButton_1.setBounds(10, 219, 141, 23);
 		panel_3.add(btnNewButton_1);
+		
+		//sort by total cases button
+		JButton btnNewButton_2 = new JButton("Sort by total cases");
+		btnNewButton_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				sortData("total");
+			}
+		});
+		btnNewButton_2.setBounds(207, 219, 149, 23);
+		panel_3.add(btnNewButton_2);
+		
+		//sort by active cases button
+		JButton btnNewButton_3 = new JButton("Sort by active");
+		btnNewButton_3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				sortData("totalActive");
+			}
+		});
+		btnNewButton_3.setBounds(401, 219, 141, 23);
+		panel_3.add(btnNewButton_3);
+		
+		
+		JPanel panel_1 = new JPanel();
+		tabbedPane.addTab("Calculate", null, panel_1, null);
+		panel_1.setLayout(null);
+		
+		textField_1 = new JTextField();
+		textField_1.setBounds(158, 61, 123, 43);
+		panel_1.add(textField_1);
+		textField_1.setColumns(10);
+		
+		JLabel lblNewLabel_1 = new JLabel("Calculate Averages");
+		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 33));
+		lblNewLabel_1.setForeground(Color.ORANGE);
+		lblNewLabel_1.setBounds(71, 23, 286, 40);
+		panel_1.add(lblNewLabel_1);
+		
+		JButton btnNewButton_4 = new JButton("Active");
+		btnNewButton_4.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				textField_1.setText(Integer.toString(Utilities.averageActive(dhbs)));
+			}
+		});
+		btnNewButton_4.setBounds(95, 115, 111, 43);
+		panel_1.add(btnNewButton_4);
+		
+		JButton btnNewButton_5 = new JButton("Recovered");
+		btnNewButton_5.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				textField_1.setText(Integer.toString(Utilities.averageRecovered(dhbs)));
+			}
+		});
+		btnNewButton_5.setBounds(236, 115, 121, 43);
+		panel_1.add(btnNewButton_5);
+		
 		
 		drawTable();
 		makePie();
-		createLineChart();
-		createBarChart();
 	}
 	
 	public void sortData(String button) {
@@ -175,7 +218,27 @@ public class ProjectFrame extends JFrame{
 			else {
 			Collections.reverse(dhbs);	
 			}
-			order = eSort.ALPHABETICAL;
+			order = order.ALPHABETICAL;
+			break;
+			
+		case"total":
+			if(order != eSort.CASES) {
+			Collections.sort(dhbs, new DhbCompare());			
+			}
+			else {
+			Collections.reverse(dhbs);	
+			}
+			order = order.CASES;
+			break;
+			
+		case"totalActive":
+			if(order != eSort.ACTIVE) {
+			Collections.sort(dhbs, new ActiveSort());			
+			}
+			else {
+			Collections.reverse(dhbs);	
+			}
+			order = order.ACTIVE;
 			break;
 		}
 		drawTable();
@@ -207,55 +270,11 @@ public class ProjectFrame extends JFrame{
 		data.setValue(dhbs.get(i).getDhbs(), dhbs.get(i).getTotal());
 		}
 
-		JFreeChart chart = ChartFactory.createPieChart("Top 5 District health boards",data,true,true,Locale.ENGLISH);
+		JFreeChart chart = ChartFactory.createPieChart("Top District health boards",data,true,true,Locale.ENGLISH);
 
 		ChartPanel mypanel = new ChartPanel(chart);
 		mypanel.setVisible(true);
 
 		tabbedPane.add("Pie Graph",mypanel);
-		}
-
-	
-		private void createLineChart() {
-		XYSeries series1 = new XYSeries("weight");
-		series1.add(60,10);
-		series1.add(55,140);
-		series1.add(50,420);
-		series1.add(52,300);
-		series1.add(57,20);
-
-		XYSeriesCollection dataset = new XYSeriesCollection();
-		dataset.addSeries(series1);
-
-		//create chart
-		JFreeChart chart2 = ChartFactory.createXYLineChart("Deaths", "kgs", "minutes", dataset,PlotOrientation.HORIZONTAL,true,true,true);
-		//get a reference to the plot for further customisation
-		XYPlot plot = chart2.getXYPlot();
-
-		NumberAxis domain = (NumberAxis) plot.getDomainAxis();
-		domain.setRange(45,80);
-		domain.setTickUnit(new NumberTickUnit(10));
-		domain.setVerticalTickLabels(true);
-
-		NumberAxis range = (NumberAxis) plot.getRangeAxis();
-		range.setRange(0,450);
-		range.setTickUnit(new NumberTickUnit(50));
-
-		ChartPanel mypanel2 = new ChartPanel(chart2);
-		tabbedPane.add("Line Graph",mypanel2);
-		tabbedPane.setBackgroundAt(2, Color.LIGHT_GRAY);
-
-		}
-
-		private void createBarChart() {
-		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-
-		dataset.addValue(70, "Java", "2007");
-		dataset.addValue(70, "Java", "2008");
-		dataset.addValue(70, "Java", "2011");
-		JFreeChart chart3 = ChartFactory.createBarChart("Java","years","percentage",dataset,PlotOrientation.VERTICAL,true,true,true);
-		ChartPanel mypanel3 = new ChartPanel(chart3);
-		tabbedPane.add("Bar Graph",mypanel3);
-		tabbedPane.setBackgroundAt(3, new Color(186, 85, 211));
-		}
+	}
 }

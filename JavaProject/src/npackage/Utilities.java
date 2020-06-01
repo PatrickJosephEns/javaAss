@@ -38,15 +38,14 @@ public class Utilities {
 				System.out.println(item);
 			}
 			
-			Collections.sort(districs, new AlfaCompare());	
-			//Collections.reverse(districs);
+			Collections.sort(districs, new DhbCompare());	
 	    }
 	
 	public static Dhb Search(ArrayList<Dhb> districs, String dhbs) {
 		Dhb match = null;
 		boolean matched = false;
 		for(int i = 0; i < 19; i++) {
-			if(districs.get(i).getDhbs().toLowerCase().equals(dhbs.toLowerCase())) {
+			if(districs.get(i).getDhbs().toLowerCase().contains(dhbs.toLowerCase())) {
 				
 				match = districs.get(i);
 				matched = true;
@@ -58,6 +57,22 @@ public class Utilities {
 			return null;
 		}
 		return match;	
+	}
+	
+	public static int averageRecovered(ArrayList<Dhb> districs) {
+		int total = 0;
+		for(int i = 0; i < 19; i++) {
+			total += districs.get(i).getRecovered();
+		}		
+		return total / 19;
+	}
+	
+	public static int averageActive(ArrayList<Dhb> districs) {
+		int total = 0;
+		for(int i = 0; i < 19; i++) {
+			total += districs.get(i).getActive();
+		}		
+		return total / 19;
 	}
 }
 

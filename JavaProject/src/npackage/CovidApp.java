@@ -13,5 +13,4 @@ public class CovidApp {
 	gui.setVisible(true);
 
 	}
-
 }

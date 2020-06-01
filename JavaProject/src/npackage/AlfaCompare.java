@@ -9,5 +9,4 @@ public class AlfaCompare implements Comparator<Dhb> {
 		
 		return c1.getDhbs().compareTo(c2.getDhbs());
 	}
-
 }
