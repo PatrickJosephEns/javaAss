@@ -1,7 +1,11 @@
 package npackage;
 
 import java.util.Comparator;
-
+/**
+ * 
+ * @author Patrick
+ * Compares total cases in the data
+ */
 public class DhbCompare implements Comparator<Dhb> {
 	
 	@Override

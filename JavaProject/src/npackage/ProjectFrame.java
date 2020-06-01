@@ -23,7 +23,11 @@ import org.jfree.data.general.DefaultPieDataset;
 import javax.swing.JButton;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
-
+/**
+ * 
+ * @author Patrick
+ *
+ */
 
 public class ProjectFrame extends JFrame{
 	
@@ -60,10 +64,11 @@ public class ProjectFrame extends JFrame{
 	private JTable table_1;
 	private JTextField textField_1;
 			
-
-	/**
-	 * Create the frame.
-	 */
+/**
+ * Holds everything that displays on the GUI
+ * Controls what the buttons do
+ * @param dhbs
+ */
 	public ProjectFrame(ArrayList<Dhb> dhbs) {
 		order = eSort.CASES;
 		this.dhbs = dhbs;
@@ -79,7 +84,11 @@ public class ProjectFrame extends JFrame{
 		contentPane.add(tabbedPane);
 		
 		JPanel panel_3 = new JPanel();
+		panel_3.setForeground(Color.LIGHT_GRAY);
+		panel_3.setBackground(new Color(224, 255, 255));
 		tabbedPane.addTab("Home", null, panel_3, null);
+		tabbedPane.setBackgroundAt(0, Color.PINK);
+		tabbedPane.setForegroundAt(0, Color.BLACK);
 		panel_3.setLayout(null);
 		
 		JScrollPane scrollPane = new JScrollPane();
@@ -87,7 +96,9 @@ public class ProjectFrame extends JFrame{
 		panel_3.add(scrollPane);
 				
 		panel = new JPanel();
+		panel.setBackground(new Color(224, 255, 255));
 		tabbedPane.addTab("Search", null, panel, null);
+		tabbedPane.setBackgroundAt(1, Color.PINK);
 		panel.setLayout(null);
 		
 		textField = new JTextField();
@@ -95,9 +106,14 @@ public class ProjectFrame extends JFrame{
 		panel.add(textField);
 		textField.setColumns(10);
 		
-		//search
+		/**
+		 * search button on the search panel
+		 */
 		JButton btnNewButton = new JButton("Search");
 		btnNewButton.addActionListener(new ActionListener() {
+			/**
+			 * takes the match from utilities.search and displays all the information from that match
+			 */
 			public void actionPerformed(ActionEvent e) {
 				String searchVal = textField.getText();
 				Dhb match = Utilities.Search(dhbs, searchVal);
@@ -124,7 +140,7 @@ public class ProjectFrame extends JFrame{
 		scrollPane_1.setBounds(36, 113, 476, 39);
 		panel.add(scrollPane_1);
 		
-		//seach table
+		//search table
 		table_1 = new JTable();
 		scrollPane_1.setViewportView(table_1);
 		table_1.setModel(tm2);
@@ -172,43 +188,50 @@ public class ProjectFrame extends JFrame{
 		
 		
 		JPanel panel_1 = new JPanel();
+		panel_1.setBackground(new Color(224, 255, 255));
 		tabbedPane.addTab("Calculate", null, panel_1, null);
+		tabbedPane.setBackgroundAt(2, Color.PINK);
 		panel_1.setLayout(null);
 		
 		textField_1 = new JTextField();
-		textField_1.setBounds(158, 61, 123, 43);
+		textField_1.setBounds(174, 116, 123, 43);
 		panel_1.add(textField_1);
 		textField_1.setColumns(10);
 		
 		JLabel lblNewLabel_1 = new JLabel("Calculate Averages");
 		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 33));
 		lblNewLabel_1.setForeground(Color.ORANGE);
-		lblNewLabel_1.setBounds(71, 23, 286, 40);
+		lblNewLabel_1.setBounds(108, 43, 286, 40);
 		panel_1.add(lblNewLabel_1);
 		
+		//average active cases button
 		JButton btnNewButton_4 = new JButton("Active");
 		btnNewButton_4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				textField_1.setText(Integer.toString(Utilities.averageActive(dhbs)));
 			}
 		});
-		btnNewButton_4.setBounds(95, 115, 111, 43);
+		btnNewButton_4.setBounds(71, 190, 111, 43);
 		panel_1.add(btnNewButton_4);
 		
+		//average recovered cases button
 		JButton btnNewButton_5 = new JButton("Recovered");
 		btnNewButton_5.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				textField_1.setText(Integer.toString(Utilities.averageRecovered(dhbs)));
 			}
 		});
-		btnNewButton_5.setBounds(236, 115, 121, 43);
+		btnNewButton_5.setBounds(292, 190, 121, 43);
 		panel_1.add(btnNewButton_5);
 		
 		
 		drawTable();
 		makePie();
 	}
-	
+	/**
+	 * controls the three buttons that can sort the data 
+	 * @param button
+	 */
 	public void sortData(String button) {
 		switch(button) {
 		case"alphabet":
@@ -243,7 +266,9 @@ public class ProjectFrame extends JFrame{
 		}
 		drawTable();
 	}
-	
+	/**
+	 * draws the data to the table
+	 */
 	public void drawTable() {
 		tm.setRowCount(0);
 		for(int i = 0; i <19; i++) {
@@ -259,7 +284,9 @@ public class ProjectFrame extends JFrame{
 		}
 	}
 
-	
+	/**
+	 * makes the pie chart with the top 10 district health boards
+	 */
 	private void makePie() {
 
 		DefaultPieDataset data = new DefaultPieDataset();
@@ -276,5 +303,6 @@ public class ProjectFrame extends JFrame{
 		mypanel.setVisible(true);
 
 		tabbedPane.add("Pie Graph",mypanel);
+		tabbedPane.setBackgroundAt(3, Color.PINK);
 	}
 }

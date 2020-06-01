@@ -1,7 +1,11 @@
 package npackage;
 
 import java.util.ArrayList;
-
+/**
+ * 
+ * @author Patrick
+ * 
+ */
 public class Dhb {
 
 	private String dhbs;
@@ -10,7 +14,15 @@ public class Dhb {
 	private int deceased;
 	private int total;
 	private int lastDay;
-	
+	/**
+	 * Gets and sets variables of the data
+	 * @param dhbs
+	 * @param active
+	 * @param recovered
+	 * @param deceased
+	 * @param total
+	 * @param lastDay
+	 */
 	public Dhb(String dhbs, int active, int recovered, int deceased, int total, int lastDay) {
 		super();
 		this.dhbs = dhbs;

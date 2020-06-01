@@ -1,7 +1,11 @@
 package npackage;
 
 import java.util.ArrayList;
-
+/**
+ * 
+ * @author Patrick
+ * 
+ */
 public class CovidApp {
 
 	/** Creates a new instance of CovidApp */

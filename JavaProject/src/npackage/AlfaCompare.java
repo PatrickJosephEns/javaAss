@@ -2,6 +2,11 @@ package npackage;
 
 import java.util.Comparator;
 
+/**
+ * 
+ * @author Patrick
+ * Compares the names of the dhbs in the data
+ */
 public class AlfaCompare implements Comparator<Dhb> {
 	
 	@Override

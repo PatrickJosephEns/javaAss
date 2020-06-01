@@ -7,9 +7,16 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import javax.swing.JOptionPane;
-
+/**
+ * 
+ * @author Patrick
+ *
+ */
 public class Utilities {
-
+/**
+ * Loads csv file and splits on ,
+ * @param districs
+ */
 	public static void load(ArrayList<Dhb> districs) {
 		String dhbs;
 		String line;
@@ -41,6 +48,12 @@ public class Utilities {
 			Collections.sort(districs, new DhbCompare());	
 	    }
 	
+	/**
+	 * Searches for a match between what the user typed and what is in the csv file
+	 * @param districs
+	 * @param dhbs
+	 * @return
+	 */
 	public static Dhb Search(ArrayList<Dhb> districs, String dhbs) {
 		Dhb match = null;
 		boolean matched = false;
@@ -59,6 +72,11 @@ public class Utilities {
 		return match;	
 	}
 	
+	/**
+	 * gets the average of the recovered cases between the dhbs
+	 * @param districs
+	 * @return
+	 */
 	public static int averageRecovered(ArrayList<Dhb> districs) {
 		int total = 0;
 		for(int i = 0; i < 19; i++) {
@@ -67,6 +85,11 @@ public class Utilities {
 		return total / 19;
 	}
 	
+	/**
+	 * gets the average of the active cases between the dhbs
+	 * @param districs
+	 * @return
+	 */
 	public static int averageActive(ArrayList<Dhb> districs) {
 		int total = 0;
 		for(int i = 0; i < 19; i++) {
